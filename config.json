@@ -1,12 +1,22 @@
 {
   "sandbox": {
+    /*    
     "squareApplicationId": "sandbox-application-id-here",
     "squareAccessToken": "sandbox-access-token-here",
-    "squareLocationId": "sandbox-location-id-here"
+    "squareLocationId": "sandbox-location-id-here" */
+    "squareApplicationId": process.env.APPLICATION_ID_SANDBOX,
+    "squareAccessToken": "process.env.ACCESS_TOKEN_SANDBOX",
+    "squareLocationId": "process.env.LOCATION_ID_SANDBOX"
   },
+  process.env.MONGOLAB_URI
   "production": {
+     /*   
     "squareApplicationId": "prod-application-id-here",
     "squareAccessToken": "prod-access-token-here",
     "squareLocationId": "prod-location-id-here"
+    */
+    "squareApplicationId": process.env.APPLICATION_ID_PROD,
+    "squareAccessToken": "process.env.ACCESS_TOKEN_PROD",
+    "squareLocationId": "process.env.LOCATION_ID_PROD"
   }
 }
