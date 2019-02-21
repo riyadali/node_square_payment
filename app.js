@@ -9,7 +9,7 @@ squareConnect = require('square-connect');
 var routes = require('./routes/index');
 
 var app = express();
-var config = require('./config')[app.get('env')];
+var config = require('./config.js')[app.get('env')];
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
