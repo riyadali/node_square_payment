@@ -10,7 +10,9 @@ var routes = require('./routes/index');
 
 var app = express();
 var test = require('./config.js');
+var test2 = require('./config.js')[app.get('env')];
 console.log("test is..."+JSON.stringify(test));
+console.log("test is..."+JSON.stringify(test2));
 var config = require('./config.js')[app.get('env')];
 
 // view engine setup
