@@ -14,7 +14,7 @@ var test2 = require('./config.js')[app.get('env')];
 console.log("test is..."+JSON.stringify(test));
 console.log("test is..."+JSON.stringify(test2));
 console.log("env is..."+app.get('env'));
-console.log("test[env]..."+JSON.stringify(test[app.get('env')]));
+console.log("test[env]..."+JSON.stringify(test.config[app.get('env')]));
 console.log("test['production']..."+JSON.stringify(test.config['production']));
 var config = require('./config.js')[app.get('env')];
 
