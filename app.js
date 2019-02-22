@@ -9,6 +9,8 @@ squareConnect = require('square-connect');
 var routes = require('./routes/index');
 
 var app = express();
+var test = require('./config.js');
+console.log("test is..."+test);
 var config = require('./config.js')[app.get('env')];
 
 // view engine setup
