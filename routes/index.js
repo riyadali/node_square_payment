@@ -45,6 +45,7 @@ router.post('/process-payment', function(req,res,next){
 			'result': error.response.text
 		}
 		*/
+		console.log("error is..."+error.message)
 		return res.status(400).send(new Error(error.message));
 	   }
 	);
