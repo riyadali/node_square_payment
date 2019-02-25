@@ -38,14 +38,15 @@ router.post('/process-payment', function(req,res,next){
 			'result': json
 		}); */
 		return res.json(data);
-	}
-	 /* let errors filter up to caller -- don't handle it here								    
-         , function(error) {
+	}, function(error) {
+		/*
 		res.render('process-payment', {
 			'title': 'Payment Failure',
 			'result': error.response.text
 		}
-	*/
+		*/
+		return res.status(400).send(new Error(error.message));
+	   }
 	);
 
 });
