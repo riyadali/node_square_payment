@@ -44,9 +44,9 @@ router.post('/process-payment', function(req,res,next){
 		res.render('process-payment', {
 			'title': 'Payment Failure',
 			'result': error.response.text
-		});
-	 */
-	});
+		}
+	*/
+	);
 
 });
 
