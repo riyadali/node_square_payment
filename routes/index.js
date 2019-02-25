@@ -3,7 +3,7 @@ var router = express.Router();
 var util = require('util');
 
 var app = express();
-var config = require('.././config.json')[app.get('env')];
+var config = require('.././config.js')[app.get('env')];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
