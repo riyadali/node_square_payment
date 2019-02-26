@@ -31,17 +31,23 @@ router.post('/process-payment', function(req,res,next){
 		idempotency_key: idempotency_key
 	};
 	transactions_api.charge(config.squareLocationId, request_body).then(function(data) {
+		/*
 		var json= JSON.stringify(data);
 		res.render('process-payment', {
 			'title': 'Payment Successful',
 			'result': json
-		});
+		}); */
+		return res.json(data);
 	}, function(error) {
+		/*
 		res.render('process-payment', {
 			'title': 'Payment Failure',
 			'result': error.response.text
-		});
-	});
+		}
+		*/		
+		return next(error);
+	   }
+	);
 
 });
 
