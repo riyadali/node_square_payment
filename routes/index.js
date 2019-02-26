@@ -56,7 +56,7 @@ router.post('/oldprocess-payment', function(req,res,next){
  
   var idempotency_key = require('crypto').randomBytes(64).toString('hex');
   var request_body = {
-      idempotency_key: generateIdempotencyKey(),
+      idempotency_key: idempotency_key,
       order: {
         reference_id: 'reference_id',
         line_items: [
