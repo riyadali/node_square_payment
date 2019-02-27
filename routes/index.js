@@ -15,7 +15,10 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-router.post('/oldprocess-payment', function(req,res,next){
+// Controller that handles interface with Square transaction api. 
+// On the client side a nonce is generated that is associated with a payment request (credit card)
+// This nonce is used here to complete the charge using Suqare's transaction API
+router.post('/process-payment', function(req,res,next){
 	var request_params = req.body;
 
 	var idempotency_key = require('crypto').randomBytes(64).toString('hex');
@@ -51,8 +54,12 @@ router.post('/oldprocess-payment', function(req,res,next){
 
 });
 
-//router.post('/process-payment-checkout', function(req,res,next){
- router.post('/process-payment', function(req,res,next){
+// Controller that handles interface with Square's checkout API.
+// On the client side an order is generated and then passed to the controller  (Currently no order details is passed in.
+// A contrived order is created and sent to the checkout api .. but hopefully this will change in the future so that
+// the client's order is captured and then sent to Square's checkoput)
+
+ router.post('/process-checkout', function(req,res,next){
  
   var idempotency_key = require('crypto').randomBytes(64).toString('hex');
   var request_body = {
