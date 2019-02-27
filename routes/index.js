@@ -133,8 +133,8 @@ router.post('/process-payment', function(req,res,next){
         country: 'US',
         first_name: 'Jane',
         last_name: 'Doe'
-      },
-      redirect_url: 'https://www.example.com/checkout-order-confirm'
+      }
+      // redirect_url: 'https://www.example.com/checkout-order-confirm'
     }; // end definition of request body 
 
     var checkout_api = new squareConnect.CheckoutApi();
