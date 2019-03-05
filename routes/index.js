@@ -27,6 +27,7 @@ router.get('/list-catalog', function(req, res, next) {
 	console.log("type of query types"+typeof queryTypes);
 	console.log("type of junk"+typeof queryTes);
 	if (typeof queryTypes === 'undefined') { // types not specified as query param
+	   console.log('sending response of 400');
 	   return res.sendStatus(400);
 	}
 	
