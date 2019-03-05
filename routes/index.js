@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
 // a comma separated list of types.  A sample invocation of this api follows 
 // GET https://connect.squareup.com/v2/catalog/list?types=category,tax
 // Code modelled after example found here https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#listCatalog
-router.get('/list_catalog', function(req, res, next) {
+router.get('/list-catalog', function(req, res, next) {
 	// Set the app and location ids for sqpaymentform.js to use
 	let queryTypes = req.query.types;
 	if (typeof types != 'undefined') { // types not specified as query param
