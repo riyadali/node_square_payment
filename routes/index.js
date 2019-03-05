@@ -23,18 +23,18 @@ router.get('/', function(req, res, next) {
 router.get('/list-catalog', function(req, res, next) {
 	// Set the app and location ids for sqpaymentform.js to use
 	let queryTypes = req.query.types;
-	console.log("query string ..."+JSON.stringify(req.query));
-	console.log("type of query types"+typeof queryTypes);
-	console.log("type of junk"+typeof queryTes);
+	//console.log("query string ..."+JSON.stringify(req.query));
+	//console.log("type of query types"+typeof queryTypes);
+	//console.log("type of junk"+typeof queryTes);
 	if (typeof queryTypes === 'undefined') { // types not specified as query param
-	   console.log('sending response of 400');
+	   //console.log('sending response of 400');
 	   return res.sendStatus(400);
 	}
 	
 		
 	var catalog_api = new squareConnect.CatalogApi();
 	var opts = { 
-	// 'cursor': "", // String | The pagination cursor returned in the previous response. Leave unset for an initial request. See [Paginating results](#paginatingresults) for more information.
+	 'cursor': "", // String | The pagination cursor returned in the previous response. Leave unset for an initial request. See [Paginating results](#paginatingresults) for more information.
   	 'types': queryTypes // String | An optional case-insensitive, comma-separated list of object types to retrieve, for example `ITEM,ITEM_VARIATION,CATEGORY`.  The legal values are taken from the [CatalogObjectType](#type-catalogobjecttype) enumeration, namely `\"ITEM\"`, `\"ITEM_VARIATION\"`, `\"CATEGORY\"`, `\"DISCOUNT\"`, `\"TAX\"`, `\"MODIFIER\"`, or `\"MODIFIER_LIST\"`.
 	};
 	
