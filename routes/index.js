@@ -15,6 +15,34 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+// Get List of catalog items from Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-listcatalog) 
+// The parameter represents what type of Catalog entries to list.  It could be a single type such as ITEM or it could be
+// a comma separated list of types.  A sample invocation of this api follows 
+// GET https://connect.squareup.com/v2/catalog/list?types=category,tax
+// Code modelled after example found here https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#listCatalog
+router.get('/list_catalog', function(req, res, next) {
+	// Set the app and location ids for sqpaymentform.js to use
+	let queryTypes = req.query.types;
+	if (typeof types != 'undefined') { // types no specified as query param
+	   return res.sendStatus(400);
+	}
+	
+		
+	var catalog_api = new squareConnect.CatalogApi();
+	var opts = { 
+	 'cursor': "", // String | The pagination cursor returned in the previous response. Leave unset for an initial request. See [Paginating results](#paginatingresults) for more information.
+  	 'types': queryTypes // String | An optional case-insensitive, comma-separated list of object types to retrieve, for example `ITEM,ITEM_VARIATION,CATEGORY`.  The legal values are taken from the [CatalogObjectType](#type-catalogobjecttype) enumeration, namely `\"ITEM\"`, `\"ITEM_VARIATION\"`, `\"CATEGORY\"`, `\"DISCOUNT\"`, `\"TAX\"`, `\"MODIFIER\"`, or `\"MODIFIER_LIST\"`.
+	};
+	
+	// List catalog entries
+	catalog_api.listCatalog(opts).then(function(data) {
+  	      return res.json(data);
+	}, function(error) {
+  	     return next(error);
+	});
+	
+});
+
 // Controller that handles interface with Square transaction api. 
 // On the client side a nonce is generated that is associated with a payment request (credit card)
 // This nonce is used here to complete the charge using Suqare's transaction API
