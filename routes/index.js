@@ -22,7 +22,8 @@ router.get('/', function(req, res, next) {
 // Code modelled after example found here https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#listCatalog
 router.get('/list-catalog', function(req, res, next) {
 	// Set the app and location ids for sqpaymentform.js to use
-	let queryTypes = req.query.types;	
+	let queryTypes = req.query.types;
+	console.log("query string ..."+JSON.stringify(req.query));
 	if (typeof queryTypes != 'undefined') { // types not specified as query param
 	   return res.sendStatus(400);
 	}
