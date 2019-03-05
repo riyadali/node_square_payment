@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
 router.get('/list-catalog', function(req, res, next) {
 	// Set the app and location ids for sqpaymentform.js to use
 	let queryTypes = req.query.types;
-	console.log("query string ..."+JSON.stringify(req.query)+);
+	console.log("query string ..."+JSON.stringify(req.query));
 	if (typeof queryTypes === 'undefined') { // types not specified as query param
 	   return res.sendStatus(400);
 	}
