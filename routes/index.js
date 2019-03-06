@@ -22,11 +22,11 @@ router.get('/', function(req, res, next) {
 router.get('/object/:id', function(req, res, next) {	
 	let queryRelated = req.query.include_related_objects;
 	var opts = { 	
-  	 'include_related_objects': false // defaults to not include related objects 
+  	 'includeRelatedObjects': false // defaults to not include related objects 
 	};
 	if (typeof queryRelated !== 'undefined') { // include_related not specified as query param
 	   if (queryRelated === 'true') {
-	     opts.include_related_objects = true;
+	     opts.includeRelatedObjects = true;
 	   }
 	}
 		
