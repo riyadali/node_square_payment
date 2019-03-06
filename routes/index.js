@@ -100,7 +100,7 @@ router.post('/object', function(req,res,next){
 	var catalog_api = new squareConnect.CatalogApi();
 	
 	// Add catalog object
-	catalog_api.UpsertCatalogObject(request_body).then(function(data) {
+	catalog_api.upsertCatalogObject(request_body).then(function(data) {
   	      return res.json(data);
 	}, function(error) {
   	     return next(error);
