@@ -15,13 +15,38 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+// Get catalog object from Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-retrievecatalogobject
+// A sample invocation of this api follows 
+// GET https://connect.squareup.com/v2/catalog/object/{object_id}?include_related_objects=true
+// Code modelled after example found here https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#retrievecatalogobject
+router.get('/object/:id', function(req, res, next) {	
+	let queryRelated = req.query.include_related_objects;
+	var opts = { 	
+  	 'include_related_objects': false // defaults to not include related objects 
+	};
+	if (typeof queryRelated === 'undefined') { // include_related not specified as query param	  
+	   opts.include_related_objects = true;
+	}
+		
+		
+	var catalog_api = new squareConnect.CatalogApi();
+	
+	
+	// List catalog entries
+	catalog_api.retrieveCatalogObject(req.params.id,opts).then(function(data) {
+  	      return res.json(data);
+	}, function(error) {
+  	     return next(error);
+	});
+	
+});
+
 // Get List of catalog items from Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-listcatalog) 
 // The parameter represents what type of Catalog entries to list.  It could be a single type such as ITEM or it could be
 // a comma separated list of types.  A sample invocation of this api follows 
 // GET https://connect.squareup.com/v2/catalog/list?types=category,tax
 // Code modelled after example found here https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#listCatalog
-router.get('/list-catalog', function(req, res, next) {
-	// Set the app and location ids for sqpaymentform.js to use
+router.get('/list-catalog', function(req, res, next) {	
 	let queryTypes = req.query.types;
 	//console.log("query string ..."+JSON.stringify(req.query));
 	//console.log("type of query types"+typeof queryTypes);
