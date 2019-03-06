@@ -100,11 +100,8 @@ router.post('/object', auth.required, function(req,res,next){
 	
 	var catalog_api = new squareConnect.CatalogApi();
 	
-	if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token' ||
-	  req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-          var token = req.headers.authorization.split(' ')[1];	
-	  console.log("User from token is..."+request.payload);
-	}
+	console.log("User from token is..."+req.payload);
+	
 	
 	// Add catalog object
 	catalog_api.upsertCatalogObject(request_body).then(function(data) {
