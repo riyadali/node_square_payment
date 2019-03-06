@@ -1,4 +1,6 @@
 var express = require('express');
+var jwt = require('express-jwt');
+var secret = require('../config').secret;
 var router = express.Router();
 var util = require('util');
 var auth = require('./auth');
@@ -100,7 +102,11 @@ router.post('/object', auth.required, function(req,res,next){
 	
 	var catalog_api = new squareConnect.CatalogApi();
 	
-	console.log("User from token is..."+req.user);
+	if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token' ||
+	  req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+          var token = req.headers.authorization.split(' ')[1];	
+	  console.log("User from token is..."+jwt.decode(token, secret));
+	}
 	
 	// Add catalog object
 	catalog_api.upsertCatalogObject(request_body).then(function(data) {
