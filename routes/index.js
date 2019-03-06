@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var util = require('util');
+var auth = require('../auth');
 
 var app = express();
 var config = require('.././config.js')[app.get('env')];
@@ -92,7 +93,7 @@ router.get('/list-catalog', function(req, res, next) {
 */
 // Code modelled after example found here 
 // https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#upsertcatalogobject
-router.post('/object', function(req,res,next){
+router.post('/object', auth.required, function(req,res,next){
 	var idempotency_key = require('crypto').randomBytes(64).toString('hex');
 	var request_body = req.body;
   	request_body.idempotency_key = idempotency_key;
