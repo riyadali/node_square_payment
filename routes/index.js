@@ -74,6 +74,40 @@ router.get('/list-catalog', function(req, res, next) {
 	
 });
 
+// Add catalog object to Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-upsertcatalogobject
+// A sample invocation of this api follows 
+// POST https://connect.squareup.com/v2/catalog/object
+/* {
+  	"idempotency_key": "af3d1afc-7212-4300-b463-0bfc5314a5ae",
+  	"object": {
+    		"type": "ITEM",
+    		"id": "#Cocoa",
+    		"item_data": {
+			"name": "Cocoa",
+      			"description": "Hot chocolate",
+      			"abbreviation": "Ch"
+    		}
+  	}
+  }
+*/
+// Code modelled after example found here 
+// https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#upsertcatalogobject
+router.post('/object', function(req,res,next){
+	var idempotency_key = require('crypto').randomBytes(64).toString('hex');
+	var request_body = req.body;
+  	request_body.idempotency_key = idempotency_key;
+	
+	var catalog_api = new squareConnect.CatalogApi();
+	
+	// Add catalog object
+	catalog_api.UpsertCatalogObjectRequest(request_body).then(function(data) {
+  	      return res.json(data);
+	}, function(error) {
+  	     return next(error);
+	});
+	
+});
+
 // Controller that handles interface with Square transaction api. 
 // On the client side a nonce is generated that is associated with a payment request (credit card)
 // This nonce is used here to complete the charge using Suqare's transaction API
