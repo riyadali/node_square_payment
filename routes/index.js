@@ -21,7 +21,7 @@ router.delete('/object/:id', auth.required, function(req, res, next) {
 	
 	// Delete catalog entry
 	catalog_api.deleteCatalogObject(req.params.id).then(function(data) {
-	      console.log('API called successfully. Returned data: ' + JSON.stringify(data));
+	      //console.log('API called successfully. Returned data: ' + JSON.stringify(data));
   	      return res.json(data);
 	}, function(error) {
   	     return next(error);
