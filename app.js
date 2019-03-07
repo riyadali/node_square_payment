@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 squareConnect = require('square-connect');
 
-var routes = require('./routes/index');
+
 
 var app = express();
 
@@ -30,6 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '.well-known')));
 
+var routes = require('./routes/index');
 app.use('/', routes);
 
 // Set Square Connect credentials
