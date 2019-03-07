@@ -1,8 +1,7 @@
 var auth = require('./auth');
 var router = require('express').Router();
 
-var app = require('../app');
-var config = require('../config.js')[app.get('env')];
+var config = require('../config.js')[process.env.NODE_ENV];
 
 // Delete catalog object from Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-deletecatalogobject
 // A sample invocation of this api follows 
