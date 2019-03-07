@@ -1,4 +1,6 @@
 var express = require('express');
+// Refer to https://stackoverflow.com/questions/10090414/express-how-to-pass-app-instance-to-routes-from-a-different-file
+var app = module.exports = express(); //now app.js can be required to bring app into any file
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -69,4 +71,4 @@ app.use(function(err, req, res, next) {
 });
 
 
-module.exports = app;
+// module.exports = app;
