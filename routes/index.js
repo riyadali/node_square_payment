@@ -1,6 +1,5 @@
 var auth = require('./auth');
 
-var app = require('../app');
 var config = require('../config.js')[process.env.NODE_ENV];
 
 var router = require('express').Router();
