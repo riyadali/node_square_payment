@@ -1,7 +1,7 @@
 var auth = require('./auth');
 var router = require('express').Router();
-var app = require('../app');
-var config = require('../config.js')[app.get('env')];
+
+var config = require('../config.js')[process.env.NODE_ENV];
 
 // Controller that handles interface with Square's checkout API.
 // On the client side an order is generated and then passed to the controller  (Currently no order details is passed in.
