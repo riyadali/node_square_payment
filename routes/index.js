@@ -28,6 +28,36 @@ router.delete('/object/:id', auth.required, function(req, res, next) {
 	});
 });
 
+// Batch delete catalog object from Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-batchdeletecatalogobjects
+// A sample invocation of this api follows 
+// POST https://connect.squareup.com/v2/catalog/batch-delete
+/* {
+  	"object_ids": [
+	  "W62UWFY35CWMYGVWK6TWJDNI",
+	  "AA27W3M2GGTF3H6AVPNB77CK"
+	]    	
+  }
+*/
+// Code modelled after example found here 
+// https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-batchdeletecatalogobjects
+router.post('/batch-delete', auth.required, function(req,res,next){
+	var catalog_api = new squareConnect.CatalogApi();
+	
+	if (req.payload.username!="TommyCat") {
+	  return res.sendStatus(403);
+	}
+	
+	
+	// Delete a batch of catalog objects
+	console.log("Incoming request to batchDelete..."+JSON.stringify(req.body))
+	catalog_api.batchDeleteCatalogObjects(req.body).then(function(data) {
+  	      return res.json(data);
+	}, function(error) {
+  	     return next(error);
+	});
+	
+});
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
