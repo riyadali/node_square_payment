@@ -49,7 +49,7 @@ router.post('/batch-delete', auth.required, function(req,res,next){
 	
 	
 	// Delete a batch of catalog objects
-	console.log("Incoming request to batchDelete..."+JSON.stringify(req.body))
+	//console.log("Incoming request to batchDelete..."+JSON.stringify(req.body))
 	catalog_api.batchDeleteCatalogObjects(req.body).then(function(data) {
   	      return res.json(data);
 	}, function(error) {
