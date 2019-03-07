@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-router.use('/transaction', require('./transaction'));
+router.use('/transactions', require('./transactions'));
 router.use('/checkout', require('./checkout'));
 router.use('/catalog', require('./catalog'));
 
