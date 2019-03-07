@@ -1,5 +1,7 @@
 var auth = require('./auth');
 var router = require('express').Router();
+var app = express();
+var config = require('../config.js')[app.get('env')];
 
 // Controller that handles interface with Square transaction api. 
 // On the client side a nonce is generated that is associated with a payment request (credit card)
