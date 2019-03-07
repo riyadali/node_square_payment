@@ -1,8 +1,9 @@
-var express = require('express');
-var router = express.Router();
 var auth = require('./auth');
+var express = require('express');
 var app = express();
 var config = require('../config.js')[app.get('env')];
+
+var router = express.Router();
 
 
 /* GET home page. */
