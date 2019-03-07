@@ -6,6 +6,29 @@ var auth = require('./auth');
 var app = express();
 var config = require('.././config.js')[app.get('env')];
 
+// Delete catalog object from Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-deletecatalogobject
+// A sample invocation of this api follows 
+// DELETE https://connect.squareup.com/v2/catalog/object/{object_id}
+// Code modelled after example found here 
+// https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#deletecatalogobject
+router.delete('/object/:id', auth.required, function(req, res, next) {
+	
+  	var catalog_api = new squareConnect.CatalogApi();
+	
+	if (req.payload.username!="TommyCat") {
+	  return res.sendStatus(403);
+	}
+	
+	// Delete catalog entry
+	catalog_api.deleteCatalogObject(req.params.id).then(function(data) {
+	      console.log('API called successfully. Returned data: ' + JSON.stringify(data));
+  	      return res.json(data);
+	}, function(error) {
+  	     return next(error);
+	});
+});
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	// Set the app and location ids for sqpaymentform.js to use
