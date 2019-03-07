@@ -1,5 +1,6 @@
 var auth = require('./auth');
 var router = require('express').Router();
+var express = require('express');
 var app = express();
 var config = require('../config.js')[app.get('env')];
 
