@@ -141,7 +141,7 @@ router.get('/list-catalog', function(req, res, next) {
 */
 // Code modelled after example found here 
 // https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#searchcatalogobjects
-router.post('/batch-retrieve', function(req,res,next){
+router.post('/search', function(req,res,next){
 	var catalog_api = new squareConnect.CatalogApi();
 	
 	// Retrieve a batch of catalog objects	
