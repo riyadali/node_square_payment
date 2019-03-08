@@ -36,7 +36,7 @@ router.delete('/object/:id', auth.required, function(req, res, next) {
   }
 */
 // Code modelled after example found here 
-// https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-batchdeletecatalogobjects
+// https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#batchdeletecatalogobjects
 router.post('/batch-delete', auth.required, function(req,res,next){
 	var catalog_api = new squareConnect.CatalogApi();
 	
@@ -114,6 +114,31 @@ router.get('/list-catalog', function(req, res, next) {
 	
 });
 
+// Batch retrieve catalog object from Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-batchretrievecatalogobjects
+// A sample invocation of this api follows 
+// POST https://connect.squareup.com/v2/catalog/batch-retrieve
+/* {
+  	"object_ids": [
+	  "W62UWFY35CWMYGVWK6TWJDNI",
+	  "AA27W3M2GGTF3H6AVPNB77CK"
+	],
+	"include_related_objects": true
+  }
+*/
+// Code modelled after example found here 
+// https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#batchretrievecatalogobjects
+router.post('/batch-retrieve', function(req,res,next){
+	var catalog_api = new squareConnect.CatalogApi();
+	
+	// Retrieve a batch of catalog objects	
+	catalog_api.batchRetrieveCatalogObjects(req.body).then(function(data) {
+  	      return res.json(data);
+	}, function(error) {
+  	     return next(error);
+	});
+	
+});
+
 // Add catalog object to Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-upsertcatalogobject
 // A sample invocation of this api follows 
 // POST https://connect.squareup.com/v2/catalog/object
@@ -148,6 +173,138 @@ router.post('/object', auth.required, function(req,res,next){
 	
 	// Add catalog object
 	catalog_api.upsertCatalogObject(request_body).then(function(data) {
+  	      return res.json(data);
+	}, function(error) {
+  	     return next(error);
+	});
+	
+});
+
+// Add a batch of catalog object to Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-batchupsertcatalogobjects
+// A sample invocation of this api follows 
+// POST https://connect.squareup.com/v2/catalog/batch-upsert
+/* {
+  "idempotency_key": "789ff020-f723-43a9-b4b5-43b5dc1fa3dc",
+  "batches": [
+    {
+      "objects": [
+        {
+          "type": "ITEM",
+          "id": "#Tea",
+          "present_at_all_locations": true,
+          "item_data": {
+            "name": "Tea",
+            "description": "Hot Leaf Juice",
+            "category_id": "#Beverages",
+            "tax_ids": [
+              "#SalesTax"
+            ],
+            "variations": [
+              {
+                "type": "ITEM_VARIATION",
+                "id": "#Tea_Mug",
+                "present_at_all_locations": true,
+                "item_variation_data": {
+                  "item_id": "#Tea",
+                  "name": "Mug",
+                  "pricing_type": "FIXED_PRICING",
+                  "price_money": {
+                    "amount": 150,
+                    "currency": "USD"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "ITEM",
+          "id": "#Coffee",
+          "present_at_all_locations": true,
+          "item_data": {
+            "name": "Coffee",
+            "description": "Hot Bean Juice",
+            "category_id": "#Beverages",
+            "tax_ids": [
+              "#SalesTax"
+            ],
+            "variations": [
+              {
+                "type": "ITEM_VARIATION",
+                "id": "#Coffee_Regular",
+                "present_at_all_locations": true,
+                "item_variation_data": {
+                  "item_id": "#Coffee",
+                  "name": "Regular",
+                  "pricing_type": "FIXED_PRICING",
+                  "price_money": {
+                    "amount": 250,
+                    "currency": "USD"
+                  }
+                }
+              },
+              {
+                "type": "ITEM_VARIATION",
+                "id": "#Coffee_Large",
+                "present_at_all_locations": true,
+                "item_variation_data": {
+                  "item_id": "#Coffee",
+                  "name": "Large",
+                  "pricing_type": "FIXED_PRICING",
+                  "price_money": {
+                    "amount": 350,
+                    "currency": "USD"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "CATEGORY",
+          "id": "#Beverages",
+          "present_at_all_locations": true,
+          "category_data": {
+            "name": "Beverages"
+          }
+        },
+        {
+          "type": "TAX",
+          "id": "#SalesTax",
+          "present_at_all_locations": true,
+          "tax_data": {
+            "name": "Sales Tax",
+            "calculation_phase": "TAX_SUBTOTAL_PHASE",
+            "inclusion_type": "ADDITIVE",
+            "percentage": "5.0",
+            "applies_to_custom_amounts": true,
+            "enabled": true
+          }
+        }
+      ]
+    }
+  ]
+}
+*/
+// Code modelled after example found here 
+// https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#batchupsertcatalogobjects
+router.post('/batch-upsert', auth.required, function(req,res,next){
+	var idempotency_key = require('crypto').randomBytes(64).toString('hex');
+	var request_body = req.body;
+  	request_body.idempotency_key = idempotency_key;
+	
+	var catalog_api = new squareConnect.CatalogApi();
+	
+	//console.log("User from token is..."+JSON.stringify(req.payload));
+	
+	if (req.payload.username!="TommyCat") {
+	  return res.sendStatus(403);
+	}
+	
+	
+	// Add a batch of catalog objects to Square
+	//console.log("Incoming request to batchUpsert..."+JSON.stringify(req.body))
+	catalog_api.batchUpsertCatalogObjects(request_body).then(function(data) {
   	      return res.json(data);
 	}, function(error) {
   	     return next(error);
