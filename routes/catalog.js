@@ -114,6 +114,45 @@ router.get('/list-catalog', function(req, res, next) {
 	
 });
 
+// Search for objects in catalog stored on Square (refer to 
+// https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-searchcatalogobjects
+//
+// Search supports many query types such as: CatalogQuerySortedAttribute, CatalogQueryExact, CatalogQueryRange, 
+// CatalogQueryText, CatalogQueryItemsForTax, and CatalogQueryItemsForModifierList.
+//
+// You can find documentation of how to set up the query by starting here 
+// https://docs.connect.squareup.com/api/connect/v2#type-catalogquery
+// For example a prefix query is documented here https://docs.connect.squareup.com/api/connect/v2#type-catalogqueryprefix
+//
+// A sample invocation of this api follows 
+// POST https://connect.squareup.com/v2/catalog/search
+/* {
+  "object_types": [
+    "ITEM"
+  ],
+  "query": {
+    "prefix_query": {
+      "attribute_name": "name",
+      "attribute_prefix": "tea"
+    }
+  },
+  "limit": 100
+}
+*/
+// Code modelled after example found here 
+// https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#searchcatalogobjects
+router.post('/batch-retrieve', function(req,res,next){
+	var catalog_api = new squareConnect.CatalogApi();
+	
+	// Retrieve a batch of catalog objects	
+	catalog_api.searchCatalogObjects(req.body).then(function(data) {
+  	      return res.json(data);
+	}, function(error) {
+  	     return next(error);
+	});
+	
+});
+
 // Batch retrieve catalog object from Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-batchretrievecatalogobjects
 // A sample invocation of this api follows 
 // POST https://connect.squareup.com/v2/catalog/batch-retrieve
