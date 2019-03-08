@@ -3,6 +3,89 @@ var router = require('express').Router();
 
 var config = require('../config.js')[process.env.NODE_ENV];
 
+//***
+// Update functions
+
+// Update item tax for object in Square (refer to 
+// https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-updateitemtaxes
+// A sample invocation of this api follows 
+// POST https://connect.squareup.com/v2/catalog/update-item-taxes
+/* {
+  "item_ids": [
+    "H42BRLUJ5KTZTTMPVSLFAACQ",
+    "2JXOBJIHCWBQ4NZ3RIXQGJA6"
+  ],
+  "taxes_to_enable": [
+    "4WRCNHCJZDVLSNDQ35PP6YAD"
+  ],
+  "taxes_to_disable": [
+    "AQCEGCEBBQONINDOHRGZISEX"
+  ]
+}
+*/
+// Code modelled after example found here 
+// https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#updateitemtaxes
+router.post('/update-item-taxes', auth.required, function(req,res,next){
+	var catalog_api = new squareConnect.CatalogApi();
+	
+	//console.log("User from token is..."+JSON.stringify(req.payload));
+	
+	if (req.payload.username!="TommyCat") {
+	  return res.sendStatus(403);
+	}
+	
+	
+	// Add catalog object
+	catalog_api.updateItemTaxes(req.body).then(function(data) {
+  	      return res.json(data);
+	}, function(error) {
+  	     return next(error);
+	});
+	
+});
+
+// Update item modifier lists (for example sweetner or milk choices) for object in Square (refer to 
+// https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-updateitemmodifierlists
+// A sample invocation of this api follows 
+// POST https://connect.squareup.com/v2/catalog/update-item-modifier-lists
+/* {
+  "item_ids": [
+    "H42BRLUJ5KTZTTMPVSLFAACQ",
+    "2JXOBJIHCWBQ4NZ3RIXQGJA6"
+  ],
+  "modifier_lists_to_enable": [
+    "H42BRLUJ5KTZTTMPVSLFAACQ",
+    "2JXOBJIHCWBQ4NZ3RIXQGJA6"
+  ],
+  "modifier_lists_to_disable": [
+    "7WRC16CJZDVLSNDQ35PP6YAD"
+  ]
+}
+*/
+// Code modelled after example found here 
+// https://github.com/square/connect-javascript-sdk/blob/master/docs/CatalogApi.md#updateitemmodifierlists
+router.post('/update-item-modifier-lists', auth.required, function(req,res,next){
+	var catalog_api = new squareConnect.CatalogApi();
+	
+	//console.log("User from token is..."+JSON.stringify(req.payload));
+	
+	if (req.payload.username!="TommyCat") {
+	  return res.sendStatus(403);
+	}
+	
+	
+	// Add catalog object
+	catalog_api.updateItemModifierLists(req.body).then(function(data) {
+  	      return res.json(data);
+	}, function(error) {
+  	     return next(error);
+	});
+	
+});
+
+//***
+// Delete functions
+
 // Delete catalog object from Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-deletecatalogobject
 // A sample invocation of this api follows 
 // DELETE https://connect.squareup.com/v2/catalog/object/{object_id}
@@ -54,6 +137,9 @@ router.post('/batch-delete', auth.required, function(req,res,next){
 	});
 	
 });
+
+//***
+// Retrieval functions (includes search)
 
 // Get catalog object from Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-retrievecatalogobject
 // A sample invocation of this api follows 
@@ -177,6 +263,9 @@ router.post('/batch-retrieve', function(req,res,next){
 	});
 	
 });
+
+//***
+// Add functions
 
 // Add catalog object to Square (refer to https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-upsertcatalogobject
 // A sample invocation of this api follows 
