@@ -18,6 +18,7 @@ router.get('/', function(req, res, next) {
 router.use('/transactions', require('./transactions'));
 router.use('/checkout', require('./checkout'));
 router.use('/catalog', require('./catalog'));
+router.use('/locations', require('./locations'));
 
 router.use(function(err, req, res, next){
   if(err.name === 'ValidationError'){
