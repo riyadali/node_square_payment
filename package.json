@@ -12,6 +12,7 @@
     "cookie-parser": "*",
     "debug": "*",
     "express": "*",
+    "express-jwt": "3.3.0",
     "pug": "*",
     "morgan": "*",
     "serve-favicon": "*",

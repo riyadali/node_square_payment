@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var util = require('util');
+var auth = require('./auth');
 
-var app = express();
-var config = require('.././config.js')[app.get('env')];
+var config = require('../config.js')[process.env.NODE_ENV];
+
+var router = require('express').Router();
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -15,76 +15,22 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-// Controller that handles interface with Square transaction api. 
-// On the client side a nonce is generated that is associated with a payment request (credit card)
-// This nonce is used here to complete the charge using Suqare's transaction API
-router.post('/process-payment', function(req,res,next){
-	var request_params = req.body;
+router.use('/transactions', require('./transactions'));
+router.use('/checkout', require('./checkout'));
+router.use('/catalog', require('./catalog'));
 
-	var idempotency_key = require('crypto').randomBytes(64).toString('hex');
+router.use(function(err, req, res, next){
+  if(err.name === 'ValidationError'){
+    return res.status(422).json({
+      errors: Object.keys(err.errors).reduce(function(errors, key){
+        errors[key] = err.errors[key].message;
 
-	// Charge the customer's card
-	var transactions_api = new squareConnect.TransactionsApi();
-	var request_body = {
-		card_nonce: request_params.nonce,
-		amount_money: {
-			amount: 100, // $1.00 charge
-			currency: 'USD'
-		},
-		idempotency_key: idempotency_key
-	};
-	transactions_api.charge(config.squareLocationId, request_body).then(function(data) {
-		/*
-		var json= JSON.stringify(data);
-		res.render('process-payment', {
-			'title': 'Payment Successful',
-			'result': json
-		}); */
-		return res.json(data);
-	}, function(error) {
-		/*
-		res.render('process-payment', {
-			'title': 'Payment Failure',
-			'result': error.response.text
-		}
-		*/		
-		return next(error);
-	   }
-	);
+        return errors;
+      }, {})
+    });
+  }
 
-});
-
-// Controller that handles interface with Square's checkout API.
-// On the client side an order is generated and then passed to the controller  (Currently no order details is passed in.
-// A contrived order is created and sent to the checkout api .. but hopefully this will change in the future so that
-// the client's order is captured and then sent to Square's checkoput)
-
- router.post('/process-checkout', function(req,res,next){
- 
-  var idempotency_key = require('crypto').randomBytes(64).toString('hex');
-  var request_body = req.body;
-  request_body.idempotency_key = idempotency_key;
-  
-  var checkout_api = new squareConnect.CheckoutApi();
-	
-  checkout_api.createCheckout(config.squareLocationId, request_body).then(function(data) {
-		/*
-		var json= JSON.stringify(data);
-		res.render('process-payment', {
-			'title': 'Payment Successful',
-			'result': json
-		}); */
-		return res.json(data);
-	}, function(error) {
-		/*
-		res.render('process-payment', {
-			'title': 'Payment Failure',
-			'result': error.response.text
-		}
-		*/		
-		return next(error);
-	   }
-	);
+  return next(err);
 });
 
 module.exports = router;
